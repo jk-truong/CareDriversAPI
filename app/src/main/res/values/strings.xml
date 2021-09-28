@@ -3,4 +3,5 @@
     <string name="my_rides">My Rides</string>
     <string name="ride_details">Ride Details</string>
     <string name="estimated">ESTIMATED</string>
+    <string name="cancel_trip">Cancel This Trip</string>
 </resources>

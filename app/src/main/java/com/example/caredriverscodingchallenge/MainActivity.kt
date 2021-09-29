@@ -9,7 +9,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
-
         if (currentFragment == null) {
             val fragment = MyRidesFragment.newInstance()
             supportFragmentManager

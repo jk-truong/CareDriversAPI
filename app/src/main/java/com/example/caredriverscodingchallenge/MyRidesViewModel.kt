@@ -5,9 +5,6 @@ import androidx.lifecycle.ViewModel
 
 class MyRidesViewModel : ViewModel() {
 
-    val myRidesItemLiveData: LiveData<List<RideItem>>
+    val myRidesItemLiveData: LiveData<List<Ride>> = RideFetcher().fetchRides()
 
-    init {
-        myRidesItemLiveData = RideFetcher().fetchRides()
-    }
 }

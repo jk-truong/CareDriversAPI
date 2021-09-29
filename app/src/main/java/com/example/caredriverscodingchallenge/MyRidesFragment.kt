@@ -1,5 +1,6 @@
 package com.example.caredriverscodingchallenge
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +17,7 @@ private const val TAG = "MyRidesFragment"
 class MyRidesFragment : Fragment() {
 
     private lateinit var myRidesViewModel: MyRidesViewModel
-    private lateinit var myRidesRecyclerView: RecyclerView
-    private var adapter: TripCardAdapter? = TripCardAdapter(emptyList())
+    private lateinit var ridesRecyclerView: RecyclerView
 
     private var callbacks : Callbacks? = null
 
@@ -27,7 +27,6 @@ class MyRidesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         retainInstance = true
 
         myRidesViewModel = ViewModelProviders.of(this).get(MyRidesViewModel::class.java)
@@ -40,10 +39,10 @@ class MyRidesFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_my_rides, container, false)
 
-        myRidesRecyclerView = view.findViewById(R.id.recycler_view_my_rides)
+        ridesRecyclerView = view.findViewById(R.id.recycler_view_my_rides)
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
-        myRidesRecyclerView.adapter = adapter
+        ridesRecyclerView.layoutManager = layoutManager
 
         return view
     }
@@ -58,56 +57,70 @@ class MyRidesFragment : Fragment() {
             })
     }*/
 
-    private fun updateUI(tripCards: List<TripCard>) {
-        adapter?.let {
-            it.tripCards = tripCards
-        } ?: run {
-            adapter = TripCardAdapter(tripCards)
+ /*   inner class RideAdapter(private val ride: List<Ride>) :
+        RecyclerView.Adapter<RideAdapter.ViewHolder?>() {
+
+        override fun onCreateViewHolder(
+            viewGroup: ViewGroup,
+            i: Int
+        ): ViewHolder {
+            val view: View = layoutInflater.inflate(
+                R.layout.list_item_ride,
+                viewGroup,
+                false
+                )
+            return ViewHolder(view)
         }
 
-        myRidesRecyclerView.adapter = adapter
+        override fun getItemCount(): Int = ride.size
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            holder.timeStart.text = ride[position].startsAt
+        }
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            TODO("Not yet implemented")
+        }
+        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val timeStart: TextView = itemView.findViewById<View>(R.id.text_card_time_range) as TextView
+            val numRiders: TextView = itemView.findViewById<View>(R.id.text_card_num_riders) as TextView
+            val estPrice: TextView = itemView.findViewById<View>(R.id.text_card_estimated_price) as TextView
+            val orderedWaypoints: RecyclerView =
+                itemView.findViewById(R.id.recycler_view_card_ordered_waypoints) as RecyclerView
+
+        }
+
+
+
+        *//* init {
+             this.ride = ride
+             this.context = context
+         }*//*
+    }*/
+
+    class RideAdapter(private val context: Context, private val ride: ArrayList<Ride>) :
+        RecyclerView.Adapter<RideAdapter.ViewHolder?>() {
+        override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
+            val view: View = LayoutInflater.from(viewGroup.context)
+                .inflate(R.layout.list_item_ride, viewGroup, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
+            viewHolder.timeStart.setText(ride[i].startsAt)
+            ride[i].estimatedEarningsCents?.let { viewHolder.estPrice.setText(it) }
+        }
+
+        override fun getItemCount(): Int {
+            return ride.size
+        }
+
+        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val timeStart: TextView = itemView.findViewById<View>(R.id.text_card_time_range) as TextView
+            val estPrice: TextView = itemView.findViewById<View>(R.id.text_card_estimated_price) as TextView
+
+        }
     }
 
-    private inner class TripCardHolder(view: View)
-        : RecyclerView.ViewHolder(view), View.OnClickListener {
-            private lateinit var tripCard: TripCard
-
-            private val timeRange: TextView = itemView.findViewById(R.id.text_card_time_range)
-            private val numRiders: TextView = itemView.findViewById(R.id.text_card_num_riders)
-            private val estPrice: TextView = itemView.findViewById(R.id.text_card_estimated_price)
-
-            init {
-                itemView.setOnClickListener(this)
-            }
-
-            fun bind(tripCard: TripCard) {
-                this.tripCard = tripCard
-                timeRange.text = this.tripCard.timeRange
-                numRiders.text = this.tripCard.numRiders
-                estPrice.text = this.tripCard.estPrice
-            }
-
-            override fun onClick(v: View) {
-                callbacks?.onCardSelected(tripCard.id)
-            }
-        }
-
-    private inner class TripCardAdapter(var tripCards: List<TripCard>) :
-        RecyclerView.Adapter<TripCardHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TripCardHolder {
-            val layoutInflater = LayoutInflater.from(context)
-            val view = layoutInflater.inflate(R.layout.list_item_trip_card, parent, false)
-            return TripCardHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: TripCardHolder, position: Int) {
-            val tripCard = tripCards[position]
-            holder.bind(tripCard)
-        }
-
-        override fun getItemCount() = tripCards.size
-    }
 
     companion object {
         fun newInstance(): MyRidesFragment {

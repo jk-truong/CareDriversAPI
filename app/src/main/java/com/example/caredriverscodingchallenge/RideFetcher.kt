@@ -27,6 +27,7 @@ class RideFetcher {
         hsdApi = retrofit.create(HsdApi::class.java)
     }
 
+    /** Returns a MutableLiveData list of rides */
     fun fetchRides(): LiveData<List<Ride>> {
         val responseLiveData: MutableLiveData<List<Ride>> = MutableLiveData()
         val hsdRequest: Call<HsdResponse> = hsdApi.fetchRides()
@@ -38,11 +39,12 @@ class RideFetcher {
             }
 
             override fun onResponse(call: Call<HsdResponse>, response: Response<HsdResponse>) {
-                var body = Gson().toJson(response.body())
+                val body = Gson().toJson(response.body())
                 Log.d(TAG, "Response received $body")
+
                 val hsdResponse: HsdResponse? = response.body()
-                var rides: List<Ride> = hsdResponse?.rides?: mutableListOf()
-                responseLiveData.value = rides
+                val rides: List<Ride> = hsdResponse?.rides?: mutableListOf() // List of rides from the response
+                responseLiveData.value = rides // Set list of rides to live data list
             }
         })
 

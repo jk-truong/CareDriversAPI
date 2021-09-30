@@ -1,7 +1,7 @@
 package com.example.caredriverscodingchallenge
 
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,26 +10,28 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.lang.Exception
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 private const val TAG = "MyRidesFragment"
+private const val DATE_PARSE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 
 class MyRidesFragment : Fragment() {
 
-    private lateinit var myRidesViewModel: MyRidesViewModel
+    private lateinit var rideViewModel: RideViewModel
     private lateinit var ridesRecyclerView: RecyclerView
 
-    private var callbacks : Callbacks? = null
-
-    interface Callbacks {
-        fun onCardSelected(cardId: UUID)
-    }
+    val numberFormat: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
+    val dateParse: SimpleDateFormat = SimpleDateFormat(DATE_PARSE_PATTERN, Locale.US)
+    val dateFormat: SimpleDateFormat = SimpleDateFormat("h:mm a", Locale.US)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
 
-        myRidesViewModel = ViewModelProviders.of(this).get(MyRidesViewModel::class.java)
+        rideViewModel = ViewModelProviders.of(this).get(RideViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -47,80 +49,56 @@ class MyRidesFragment : Fragment() {
         return view
     }
 
-    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        myRidesViewModel.myRidesItemLiveData.observe(
-            viewLifecycleOwner,
-            Observer { rideItems ->
-                Log.d(TAG, "Have ride items from view model $rideItems")
-                myRidesRecyclerView.adapter = RideAdapter(tripCards)
-            })
-    }*/
+        rideViewModel.rideItemLiveData.observe(viewLifecycleOwner, { rideItems ->
+            // Log.d(TAG, "Got ride items: $rideItems")
+            ridesRecyclerView.adapter = RideAdapter(rideItems)
+        })
+    }
 
- /*   inner class RideAdapter(private val ride: List<Ride>) :
+    private inner class RideAdapter(private val ride: List<Ride>) :
         RecyclerView.Adapter<RideAdapter.ViewHolder?>() {
 
         override fun onCreateViewHolder(
             viewGroup: ViewGroup,
             i: Int
         ): ViewHolder {
-            val view: View = layoutInflater.inflate(
+            val view = layoutInflater.inflate(
                 R.layout.list_item_ride,
                 viewGroup,
                 false
-                )
+            )
             return ViewHolder(view)
         }
 
         override fun getItemCount(): Int = ride.size
 
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            holder.timeStart.text = ride[position].startsAt
-        }
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            TODO("Not yet implemented")
-        }
-        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val timeStart: TextView = itemView.findViewById<View>(R.id.text_card_time_range) as TextView
-            val numRiders: TextView = itemView.findViewById<View>(R.id.text_card_num_riders) as TextView
-            val estPrice: TextView = itemView.findViewById<View>(R.id.text_card_estimated_price) as TextView
-            val orderedWaypoints: RecyclerView =
-                itemView.findViewById(R.id.recycler_view_card_ordered_waypoints) as RecyclerView
+        override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+            try {
+                val formattedStartTime = dateFormat.format(dateParse.parse(ride[position].startsAt))
+                val formattedEndTime = dateFormat.format(dateParse.parse(ride[position].endsAt))
 
-        }
+                viewHolder.timeStart.text = formattedStartTime
+                viewHolder.timeEnd.text = formattedEndTime
+            } catch (e: Exception) {
+                Log.e(TAG, "Could not parse and format dates $e")
+            }
 
 
-
-        *//* init {
-             this.ride = ride
-             this.context = context
-         }*//*
-    }*/
-
-    class RideAdapter(private val context: Context, private val ride: ArrayList<Ride>) :
-        RecyclerView.Adapter<RideAdapter.ViewHolder?>() {
-        override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
-            val view: View = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.list_item_ride, viewGroup, false)
-            return ViewHolder(view)
-        }
-
-        override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-            viewHolder.timeStart.setText(ride[i].startsAt)
-            ride[i].estimatedEarningsCents?.let { viewHolder.estPrice.setText(it) }
-        }
-
-        override fun getItemCount(): Int {
-            return ride.size
+            viewHolder.estPrice.text = numberFormat.format((ride[position].estimatedEarningsCents)?.div(
+                100.0
+            ))
+            viewHolder.numRiders.text = ride[position].orderedWaypoints?.size.toString()
         }
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val timeStart: TextView = itemView.findViewById<View>(R.id.text_card_time_range) as TextView
-            val estPrice: TextView = itemView.findViewById<View>(R.id.text_card_estimated_price) as TextView
-
+            val timeStart: TextView = itemView.findViewById(R.id.text_card_starts_at)
+            val timeEnd: TextView = itemView.findViewById(R.id.text_card_ends_at)
+            val estPrice: TextView = itemView.findViewById(R.id.text_card_estimated_price)
+            val numRiders: TextView = itemView.findViewById(R.id.text_card_num_riders)
         }
     }
-
 
     companion object {
         fun newInstance(): MyRidesFragment {

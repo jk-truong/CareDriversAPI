@@ -14,7 +14,7 @@ class Ride {
 
     @SerializedName("starts_at")
     @Expose
-    var startsAt: String? = null
+    var startsAt: String = ""
 
     @SerializedName("ends_at")
     @Expose

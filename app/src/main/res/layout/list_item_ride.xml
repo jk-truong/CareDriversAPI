@@ -9,8 +9,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/text_card_time_range"
-        android:text="4:18am - 5:37am"
+        android:id="@+id/text_card_starts_at"
+        android:text="4:18am"
+        android:textStyle="bold"
         android:layout_margin="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,10 +19,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/text_card_num_riders"
-        android:text="(3 riders - 1 booster)"
+        android:id="@+id/text_card_ends_at"
+        android:text="5:25pm"
         android:layout_margin="8dp"
-        app:layout_constraintStart_toEndOf="@+id/text_card_time_range"
+        app:layout_constraintStart_toEndOf="@id/text_card_starts_at"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_card_num_riders"
+        android:text="(3 riders)"
+        android:layout_margin="8dp"
+        app:layout_constraintStart_toEndOf="@+id/text_card_ends_at"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -49,6 +59,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/recycler_view_card_ordered_waypoints"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_card_starts_at"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

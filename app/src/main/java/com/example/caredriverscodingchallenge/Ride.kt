@@ -1,38 +1,65 @@
 package com.example.caredriverscodingchallenge
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 class Ride {
     @SerializedName("trip_id")
-    @Expose
     var tripId: Int? = null
 
     @SerializedName("in_series")
-    @Expose
     var inSeries: Boolean? = null
 
     @SerializedName("starts_at")
-    @Expose
-    var startsAt: String = ""
+    var startsAt: String? = null
 
     @SerializedName("ends_at")
-    @Expose
     var endsAt: String? = null
 
     @SerializedName("estimated_earnings_cents")
-    @Expose
     var estimatedEarningsCents: Int? = null
 
     @SerializedName("estimated_ride_minutes")
-    @Expose
     var estimatedRideMinutes: Int? = null
 
     @SerializedName("estimated_ride_miles")
-    @Expose
     var estimatedRideMiles: Double? = null
 
     @SerializedName("ordered_waypoints")
-    @Expose
     var orderedWaypoints: List<OrderedWaypoint>? = null
+
+    inner class Location {
+        @SerializedName("address")
+        var address: String? = null
+
+        @SerializedName("lat")
+        var lat: Double? = null
+
+        @SerializedName("lng")
+        var lng: Double? = null
+    }
+
+    inner class Passenger {
+        @SerializedName("id")
+        var id: Int? = null
+
+        @SerializedName("booster_seat")
+        var boosterSeat: Boolean? = null
+
+        @SerializedName("first_name")
+        var firstName: String? = null
+    }
+
+    inner class OrderedWaypoint {
+        @SerializedName("id")
+        var id: Int? = null
+
+        @SerializedName("anchor")
+        var anchor: Boolean? = null
+
+        @SerializedName("passengers")
+        var passengers: List<Passenger>? = null
+
+        @SerializedName("location")
+        var location: android.location.Location? = null
+    }
 }

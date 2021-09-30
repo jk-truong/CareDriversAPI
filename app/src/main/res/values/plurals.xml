@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="riders">
+        <item quantity="one">rider</item>
+        <item quantity="other">riders</item>
+    </plurals>
+
+    <plurals name="boosters">
+        <item quantity="one">booster</item>
+        <item quantity="other">boosters</item>
+    </plurals>
+</resources>

@@ -19,6 +19,7 @@ import java.util.*
 
 private const val TAG = "MyRidesFragment"
 private const val DATE_PARSE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+private const val DATE_FORMATTED_PATTERN = "h:mm a"
 private const val ACTION_BAR_TITLE = "My Rides"
 
 class MyRidesFragment : Fragment() {
@@ -28,7 +29,6 @@ class MyRidesFragment : Fragment() {
 
     val numberFormat: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
     val dateParse: SimpleDateFormat = SimpleDateFormat(DATE_PARSE_PATTERN, Locale.US)
-    val dateFormat: SimpleDateFormat = SimpleDateFormat("h:mm a", Locale.US)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +83,8 @@ class MyRidesFragment : Fragment() {
         }
 
         override fun onClick(view: View) {
-            Toast.makeText(context, "View clicked ${ride.tripId}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Ride trip id: ${ride.tripId}", Toast.LENGTH_SHORT).show()
+            // TODO: Create intent, open new fragment
         }
     }
 
@@ -105,28 +106,47 @@ class MyRidesFragment : Fragment() {
         override fun getItemCount(): Int = ride.size
 
         override fun onBindViewHolder(viewHolder: RideHolder, position: Int) {
+            val parsedStartTime = dateParse.parse(ride[position].startsAt)!!
+            val parsedEndTime = dateParse.parse(ride[position].endsAt)!!
+            val orderedWaypoint = ride[position].orderedWaypoints
+            val estPrice = numberFormat.format(
+                (ride[position].estimatedEarningsCents).div(100.0) // Div to get the cents
+            )
+
+            viewHolder.timeStart.text = getFormattedTimeString(parsedStartTime)
+            viewHolder.timeEnd.text = getFormattedTimeString(parsedEndTime)
+            viewHolder.numRiders.text = getNumPassengersString(orderedWaypoint)
+            viewHolder.orderedWaypoints.text = getOrderedWaypointsString(orderedWaypoint)
+            viewHolder.estPrice.text =estPrice
+
+            viewHolder.bindRideItem(ride[position])
+        }
+
+        /** Takes in a parsed date, formats it according to the pattern and returns a string with
+         * the time. */
+        private fun getFormattedTimeString(parsedTimeDate: Date): String {
             /* Set start and end time */
+            var formattedTime = ""
             try {
-                val parsedStartTime = dateParse.parse(ride[position].startsAt)!!
-                val parsedEndTime = dateParse.parse(ride[position].endsAt)!!
-                val formattedStartTime = dateFormat.format(parsedStartTime)
-                val formattedEndTime = "— " + dateFormat.format(parsedEndTime)
-
-                viewHolder.timeStart.text = formattedStartTime
-                viewHolder.timeEnd.text = formattedEndTime
+                val dateFormat = SimpleDateFormat(DATE_FORMATTED_PATTERN, Locale.US)
+                formattedTime = dateFormat.format(parsedTimeDate)
             } catch (e: Exception) {
-                Log.e(TAG, "Could not parse and format dates $e")
+                Log.e(TAG, "Could not format the date $e")
             }
+            return formattedTime
+        }
 
+        /** Takes in a list of OrderedWaypoint and returns a string containing number of riders
+         * and boosters. */
+        private fun getNumPassengersString(orderedWaypoint: List<OrderedWaypoint>): String {
             /* Find the number of passengers and set the appropriate plurals for 'rider' */
-            val numPassengers = ride[position].orderedWaypoints[0].passengers.size
+            val numPassengers = orderedWaypoint[0].passengers.size
             val stringRiders = context?.resources?.getQuantityString(R.plurals.riders, numPassengers)
             var numPassengersString = "($numPassengers $stringRiders"
 
             /* Find the number of booster seats needed. Only need to look in the first waypoint
             * that is anchored because that contains all of the passengers throughout the ride.
             * (I could be wrong about this, but from the given json I have inferred these rules) */
-            val orderedWaypoint = ride[position].orderedWaypoints
             var numBoosters = 0
             for (passenger in orderedWaypoint[0].passengers) {
                 if (passenger.boosterSeat) {
@@ -142,22 +162,25 @@ class MyRidesFragment : Fragment() {
             } else {
                 ")"
             }
+            return numPassengersString
+        }
 
+        /** Takes in a list of OrderedWaypoint and returns a string containing the addresses.
+         * Each address has a line break. */
+        private fun getOrderedWaypointsString(orderedWaypoint: List<OrderedWaypoint>): String {
             /* For every waypoint, access location and get the address. Append the address to a
             * string */
             var addressString = ""
+            var first = true
             for (i in orderedWaypoint.indices) {
-                addressString += "${i+1}. ${orderedWaypoint[i].location.address}\n"
+                if (first) {
+                    first = false
+                } else {
+                    addressString += "\n" // Prepend a line break for all lines except the first
+                }
+                addressString += "${i+1}. ${orderedWaypoint[i].location.address}"
             }
-
-            /* Set estimated price, number of riders, and number of booster seats */
-            viewHolder.estPrice.text =
-                numberFormat.format((ride[position].estimatedEarningsCents).div(100.0))
-            viewHolder.numRiders.text = numPassengersString
-            viewHolder.orderedWaypoints.text = addressString
-
-
-            viewHolder.bindRideItem(ride[position])
+            return addressString
         }
     }
 

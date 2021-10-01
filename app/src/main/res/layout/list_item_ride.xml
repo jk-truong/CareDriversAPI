@@ -13,8 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text_card_starts_at"
-        android:text="4:18am"
         android:textStyle="bold"
+        android:textSize="16sp"
         android:layout_margin="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,39 +22,53 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/text_card_ends_at"
-        android:text="5:25pm"
-        android:layout_margin="8dp"
-        app:layout_constraintStart_toEndOf="@id/text_card_starts_at"
+        android:id="@+id/text_dash"
+        android:text="@string/em_dash"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@+id/text_card_starts_at"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/text_card_num_passengers"
-        android:text="(3 riders)"
+        android:id="@+id/text_card_ends_at"
+        android:textSize="16sp"
         android:layout_margin="8dp"
-        app:layout_constraintStart_toEndOf="@+id/text_card_ends_at"
+        app:layout_constraintStart_toEndOf="@id/text_dash"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_card_num_passengers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="12sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/text_card_ends_at"
+        app:layout_constraintStart_toEndOf="@+id/text_card_ends_at" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text_card_est"
-        android:text="est."
-        android:layout_marginEnd="8dp"
+        android:text="@string/est"
+        android:layout_marginEnd="4dp"
         android:textColor="@color/hsd_blue"
         app:layout_constraintEnd_toStartOf="@+id/text_card_estimated_price"
-        app:layout_constraintBottom_toBottomOf="@+id/text_card_estimated_price" />
+        app:layout_constraintBottom_toBottomOf="@id/text_card_estimated_price" />
 
     <TextView
+        android:id="@+id/text_card_estimated_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/text_card_estimated_price"
-        android:text="$30.54"
-        android:textSize="18sp"
         android:layout_margin="8dp"
         android:textColor="@color/hsd_blue"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -62,7 +76,6 @@
         android:id="@+id/text_card_ordered_waypoints"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="1. some address here\n2. Another addy here"
         android:layout_margin="8dp"
         app:layout_constraintTop_toBottomOf="@+id/text_card_starts_at"
         app:layout_constraintStart_toStartOf="parent"

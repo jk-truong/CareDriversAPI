@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,24 +63,48 @@ class MyRidesFragment : Fragment() {
 
     }
 
+    private inner class RideHolder(itemLayout: ConstraintLayout)
+        : RecyclerView.ViewHolder(itemLayout),
+        View.OnClickListener {
+        val timeStart: TextView = itemView.findViewById(R.id.text_card_starts_at)
+        val timeEnd: TextView = itemView.findViewById(R.id.text_card_ends_at)
+        val estPrice: TextView = itemView.findViewById(R.id.text_card_estimated_price)
+        val numRiders: TextView = itemView.findViewById(R.id.text_card_num_passengers)
+        val orderedWaypoints: TextView = itemView.findViewById(R.id.text_card_ordered_waypoints)
+
+        private lateinit var ride: Ride
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        fun bindRideItem(item: Ride) {
+            ride = item
+        }
+
+        override fun onClick(view: View) {
+            Toast.makeText(context, "View clicked ${ride.tripId}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private inner class RideAdapter(private val ride: List<Ride>) :
-        RecyclerView.Adapter<RideAdapter.ViewHolder?>() {
+        RecyclerView.Adapter<RideHolder>() {
 
         override fun onCreateViewHolder(
             viewGroup: ViewGroup,
             i: Int
-        ): ViewHolder {
+        ): RideHolder {
             val view = layoutInflater.inflate(
                 R.layout.list_item_ride,
                 viewGroup,
                 false
-            )
-            return ViewHolder(view)
+            ) as ConstraintLayout
+            return RideHolder(view)
         }
 
         override fun getItemCount(): Int = ride.size
 
-        override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        override fun onBindViewHolder(viewHolder: RideHolder, position: Int) {
             /* Set start and end time */
             try {
                 val parsedStartTime = dateParse.parse(ride[position].startsAt)!!
@@ -124,20 +150,14 @@ class MyRidesFragment : Fragment() {
                 addressString += "${i+1}. ${orderedWaypoint[i].location.address}\n"
             }
 
-
             /* Set estimated price, number of riders, and number of booster seats */
             viewHolder.estPrice.text =
                 numberFormat.format((ride[position].estimatedEarningsCents).div(100.0))
             viewHolder.numRiders.text = numPassengersString
             viewHolder.orderedWaypoints.text = addressString
-        }
 
-        private inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val timeStart: TextView = itemView.findViewById(R.id.text_card_starts_at)
-            val timeEnd: TextView = itemView.findViewById(R.id.text_card_ends_at)
-            val estPrice: TextView = itemView.findViewById(R.id.text_card_estimated_price)
-            val numRiders: TextView = itemView.findViewById(R.id.text_card_num_passengers)
-            val orderedWaypoints: TextView = itemView.findViewById(R.id.text_card_ordered_waypoints)
+
+            viewHolder.bindRideItem(ride[position])
         }
     }
 

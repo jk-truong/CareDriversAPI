@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Josh/AndroidStudioProjects/BabyLearnOnline/CareDriversCodingChallenge/app/src/main/res/drawable/border.xml" value="0.33541666666666664" />
         <entry key="..\:/Users/Josh/AndroidStudioProjects/BabyLearnOnline/CareDriversCodingChallenge/app/src/main/res/layout/activity_main.xml" value="0.4628623188405797" />
         <entry key="..\:/Users/Josh/AndroidStudioProjects/BabyLearnOnline/CareDriversCodingChallenge/app/src/main/res/layout/fragment_my_rides.xml" value="0.45063405797101447" />
         <entry key="..\:/Users/Josh/AndroidStudioProjects/BabyLearnOnline/CareDriversCodingChallenge/app/src/main/res/layout/fragment_ride_details.xml" value="0.46105072463768115" />

@@ -58,6 +58,7 @@ class MyRidesFragment : Fragment() {
             // Log.d(TAG, "Got ride items: $rideItems")
             ridesRecyclerView.adapter = RideAdapter(rideItems)
         })
+
     }
 
     private inner class RideAdapter(private val ride: List<Ride>) :
@@ -80,8 +81,10 @@ class MyRidesFragment : Fragment() {
         override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
             /* Set start and end time */
             try {
-                val formattedStartTime = dateFormat.format(dateParse.parse(ride[position].startsAt))
-                val formattedEndTime = dateFormat.format(dateParse.parse(ride[position].endsAt))
+                val parsedStartTime = dateParse.parse(ride[position].startsAt)!!
+                val parsedEndTime = dateParse.parse(ride[position].endsAt)!!
+                val formattedStartTime = dateFormat.format(parsedStartTime)
+                val formattedEndTime = "— " + dateFormat.format(parsedEndTime)
 
                 viewHolder.timeStart.text = formattedStartTime
                 viewHolder.timeEnd.text = formattedEndTime
@@ -89,34 +92,52 @@ class MyRidesFragment : Fragment() {
                 Log.e(TAG, "Could not parse and format dates $e")
             }
 
-            /* Set estimated price, number of riders, and number of booster seats */
-            val numPassengers = ride[position].orderedWaypoints?.get(0)?.passengers!!.size
-            var numPassengersString = "$numPassengers" + " " +
-                    context?.resources?.getQuantityString(R.plurals.riders, numPassengers)
+            /* Find the number of passengers and set the appropriate plurals for 'rider' */
+            val numPassengers = ride[position].orderedWaypoints[0].passengers.size
+            val stringRiders = context?.resources?.getQuantityString(R.plurals.riders, numPassengers)
+            var numPassengersString = "($numPassengers $stringRiders"
 
-            val orderedWaypoint = ride[position].orderedWaypoints!!
+            /* Find the number of booster seats needed. Only need to look in the first waypoint
+            * that is anchored because that contains all of the passengers throughout the ride.
+            * (I could be wrong about this, but from the given json I have inferred these rules) */
+            val orderedWaypoint = ride[position].orderedWaypoints
             var numBoosters = 0
-            for (i in 0 until orderedWaypoint[0].passengers?.size!!) {
-                if (orderedWaypoint[0].passengers!![i].boosterSeat == true) {
-                    numBoosters ++ // Increment counter for every booster
+            for (passenger in orderedWaypoint[0].passengers) {
+                if (passenger.boosterSeat) {
+                    numBoosters ++ // Increment counter for every booster seat
                 }
             }
-            if (numBoosters > 0) {
-                numPassengersString += " - $numBoosters " +
-                        context?.resources?.getQuantityString(R.plurals.boosters, numBoosters)
+
+            /* If there are booster seats, concatenate number of booster seats required to the
+            * numPassengersString. Else, just add closing parenthesis */
+            numPassengersString += if (numBoosters > 0) {
+                val stringBoosters = context?.resources?.getQuantityString(R.plurals.boosters, numBoosters)
+                " • $numBoosters $stringBoosters)"
+            } else {
+                ")"
             }
 
+            /* For every waypoint, access location and get the address. Append the address to a
+            * string */
+            var addressString = ""
+            for (i in orderedWaypoint.indices) {
+                addressString += "${i+1}. ${orderedWaypoint[i].location.address}\n"
+            }
+
+
+            /* Set estimated price, number of riders, and number of booster seats */
             viewHolder.estPrice.text =
-                numberFormat.format((ride[position].estimatedEarningsCents)?.div(100.0))
+                numberFormat.format((ride[position].estimatedEarningsCents).div(100.0))
             viewHolder.numRiders.text = numPassengersString
+            viewHolder.orderedWaypoints.text = addressString
         }
 
-        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val timeStart: TextView = itemView.findViewById(R.id.text_card_starts_at)
             val timeEnd: TextView = itemView.findViewById(R.id.text_card_ends_at)
             val estPrice: TextView = itemView.findViewById(R.id.text_card_estimated_price)
             val numRiders: TextView = itemView.findViewById(R.id.text_card_num_passengers)
-            val orderedWaypoints: RecyclerView = itemView.findViewById(R.id.recycler_view_card_ordered_waypoints)
+            val orderedWaypoints: TextView = itemView.findViewById(R.id.text_card_ordered_waypoints)
         }
     }
 

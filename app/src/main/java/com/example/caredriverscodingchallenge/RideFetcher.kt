@@ -1,6 +1,7 @@
 package com.example.caredriverscodingchallenge
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.caredriverscodingchallenge.api.HsdApi
@@ -11,9 +12,11 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.Gson
+import kotlin.coroutines.coroutineContext
 
 private const val TAG = "RideFetcher"
 
+/** This is the retrofit configuration and API direct access */
 class RideFetcher {
 
     private val hsdApi: HsdApi

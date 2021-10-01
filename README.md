@@ -1,4 +1,4 @@
 # CareDriversAPIExample
-Made for HopSkipDrive coding challege.
+Made for HopSkipDrive coding challenge.
 
 

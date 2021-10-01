@@ -1,18 +1,17 @@
 package com.example.caredriverscodingchallenge
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.caredriverscodingchallenge.api.HsdApi
 import com.example.caredriverscodingchallenge.api.HsdResponse
+import com.example.caredriverscodingchallenge.myrides.Ride
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.google.gson.Gson
-import kotlin.coroutines.coroutineContext
 
 private const val TAG = "RideFetcher"
 

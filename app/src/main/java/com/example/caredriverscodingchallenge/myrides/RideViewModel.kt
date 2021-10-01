@@ -1,7 +1,8 @@
-package com.example.caredriverscodingchallenge
+package com.example.caredriverscodingchallenge.myrides
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.example.caredriverscodingchallenge.RideFetcher
 
 class RideViewModel : ViewModel() {
 

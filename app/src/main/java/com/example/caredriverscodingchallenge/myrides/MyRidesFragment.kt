@@ -1,4 +1,4 @@
-package com.example.caredriverscodingchallenge
+package com.example.caredriverscodingchallenge.myrides
 
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.caredriverscodingchallenge.MainActivity
+import com.example.caredriverscodingchallenge.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -67,6 +69,7 @@ class MyRidesFragment : Fragment() {
         })
     }
 
+    /** Holder for the ride card */
     private inner class RideHolder(itemLayout: ConstraintLayout)
         : RecyclerView.ViewHolder(itemLayout),
         View.OnClickListener {
@@ -89,6 +92,16 @@ class MyRidesFragment : Fragment() {
         override fun onClick(view: View) {
             Toast.makeText(context, "Ride trip id: ${ride.tripId}", Toast.LENGTH_SHORT).show()
             // TODO: Create intent, open new fragment
+        }
+    }
+
+    /** Holder for the header. Needs to be displayed for every day that has rides. */
+    private inner class HeaderHolder(itemLayout: ConstraintLayout): RecyclerView.ViewHolder(itemLayout) {
+        fun from(parent: ViewGroup): HeaderHolder {
+            val layoutInflater = LayoutInflater.from(parent.context)
+            val view = layoutInflater.inflate(
+                R.layout.list_item_trip_header, parent, false) as ConstraintLayout
+            return HeaderHolder(view)
         }
     }
 
@@ -121,7 +134,7 @@ class MyRidesFragment : Fragment() {
             viewHolder.timeEnd.text = getFormattedTimeString(parsedEndTime)
             viewHolder.numRiders.text = getNumPassengersString(orderedWaypoint)
             viewHolder.orderedWaypoints.text = getOrderedWaypointsString(orderedWaypoint)
-            viewHolder.estPrice.text =estPrice
+            viewHolder.estPrice.text = estPrice
 
             viewHolder.bindRideItem(ride[position])
         }
@@ -144,32 +157,31 @@ class MyRidesFragment : Fragment() {
          * and boosters. */
         private fun getNumPassengersString(orderedWaypoint: List<OrderedWaypoint>): String {
             var numPassengersString = ""
-            adapterScope.launch {
-                /* Find the number of passengers and set the appropriate plurals for 'rider' */
-                val numPassengers = orderedWaypoint[0].passengers.size
-                val stringRiders =
-                    context?.resources?.getQuantityString(R.plurals.riders, numPassengers)
-                numPassengersString = "($numPassengers $stringRiders"
 
-                /* Find the number of booster seats needed. Only need to look in the first waypoint
-                * that is anchored because that contains all of the passengers throughout the ride.
-                * (I could be wrong about this, but from the given json I have inferred these rules) */
-                var numBoosters = 0
-                for (passenger in orderedWaypoint[0].passengers) {
-                    if (passenger.boosterSeat) {
-                        numBoosters++ // Increment counter for every booster seat
-                    }
-                }
+            /* Find the number of passengers and set the appropriate plurals for 'rider' */
+            val numPassengers = orderedWaypoint[0].passengers.size
+            val stringRiders =
+                context?.resources?.getQuantityString(R.plurals.riders, numPassengers)
+            numPassengersString = "($numPassengers $stringRiders"
 
-                /* If there are booster seats, concatenate number of booster seats required to the
-                * numPassengersString. Else, just add closing parenthesis */
-                numPassengersString += if (numBoosters > 0) {
-                    val stringBoosters =
-                        context?.resources?.getQuantityString(R.plurals.boosters, numBoosters)
-                    " • $numBoosters $stringBoosters)"
-                } else {
-                    ")"
+            /* Find the number of booster seats needed. Only need to look in the first waypoint
+            * that is anchored because that contains all of the passengers throughout the ride.
+            * (I could be wrong about this, but from the given json I have inferred these rules) */
+            var numBoosters = 0
+            for (passenger in orderedWaypoint[0].passengers) {
+                if (passenger.boosterSeat) {
+                    numBoosters++ // Increment counter for every booster seat
                 }
+            }
+
+            /* If there are booster seats, concatenate number of booster seats required to the
+            * numPassengersString. Else, just add closing parenthesis */
+            numPassengersString += if (numBoosters > 0) {
+                val stringBoosters =
+                    context?.resources?.getQuantityString(R.plurals.boosters, numBoosters)
+                " • $numBoosters $stringBoosters)"
+            } else {
+                ")"
             }
             return numPassengersString
         }
@@ -181,15 +193,14 @@ class MyRidesFragment : Fragment() {
             * string */
             var addressString = ""
             var first = true
-            adapterScope.launch {
-                for (i in orderedWaypoint.indices) {
-                    if (first) {
-                        first = false
-                    } else {
-                        addressString += "\n" // Prepend a line break for all lines except the first
-                    }
-                    addressString += "${i + 1}. ${orderedWaypoint[i].location.address}"
+
+            for (i in orderedWaypoint.indices) {
+                if (first) {
+                    first = false
+                } else {
+                    addressString += "\n" // Prepend a line break for all lines except the first
                 }
+                addressString += "${i + 1}. ${orderedWaypoint[i].location.address}"
             }
             return addressString
         }

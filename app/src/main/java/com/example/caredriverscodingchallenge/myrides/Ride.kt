@@ -1,4 +1,4 @@
-package com.example.caredriverscodingchallenge
+package com.example.caredriverscodingchallenge.myrides
 
 import com.google.gson.annotations.SerializedName
 

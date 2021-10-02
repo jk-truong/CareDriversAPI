@@ -2,7 +2,15 @@ package com.example.caredriverscodingchallenge
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.example.caredriverscodingchallenge.myrides.MyRidesFragment
+import com.example.caredriverscodingchallenge.myrides.OrderedWaypoint
+import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
+
+private const val TAG = "MainActivity"
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

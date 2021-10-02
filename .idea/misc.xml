@@ -7,6 +7,7 @@
         <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/drawable-notnight/border.xml" value="0.553125" />
         <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/drawable/border.xml" value="0.553125" />
         <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/layout/list_item_ride.xml" value="0.5369791666666667" />
+        <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/layout/list_item_trip_header.xml" value="0.38858695652173914" />
         <entry key="..\:/Users/Josh/AndroidStudioProjects/BabyLearnOnline/CareDriversCodingChallenge/app/src/main/res/drawable/border.xml" value="0.33541666666666664" />
         <entry key="..\:/Users/Josh/AndroidStudioProjects/BabyLearnOnline/CareDriversCodingChallenge/app/src/main/res/layout/activity_main.xml" value="0.4628623188405797" />
         <entry key="..\:/Users/Josh/AndroidStudioProjects/BabyLearnOnline/CareDriversCodingChallenge/app/src/main/res/layout/fragment_my_rides.xml" value="0.45063405797101447" />
@@ -15,6 +16,7 @@
         <entry key="..\:/Users/Josh/AndroidStudioProjects/BabyLearnOnline/CareDriversCodingChallenge/app/src/main/res/layout/list_item_ride.xml" value="0.75" />
         <entry key="..\:/Users/Josh/AndroidStudioProjects/BabyLearnOnline/CareDriversCodingChallenge/app/src/main/res/layout/list_item_trip_card.xml" value="0.4411231884057971" />
         <entry key="..\:/Users/Josh/AndroidStudioProjects/BabyLearnOnline/CareDriversCodingChallenge/app/src/main/res/layout/list_item_trip_header.xml" value="0.46105072463768115" />
+        <entry key="..\:/Users/Josh/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/activity_list_item.xml" value="0.38858695652173914" />
       </map>
     </option>
   </component>

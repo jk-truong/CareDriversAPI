@@ -14,10 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.caredriverscodingchallenge.MainActivity
 import com.example.caredriverscodingchallenge.R
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import org.w3c.dom.Text
 import java.lang.Exception
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -53,68 +54,50 @@ class MyRidesFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_my_rides, container, false)
 
+
+
         ridesRecyclerView = view.findViewById(R.id.recycler_view_my_rides)
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         ridesRecyclerView.layoutManager = layoutManager
+
 
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rideViewModel.rideItemLiveData.observe(viewLifecycleOwner, { rideItems ->
+        /*rideViewModel.rideItemLiveData.observe(viewLifecycleOwner, { rideItems ->
             // Log.d(TAG, "Got ride items: $rideItems")
-            ridesRecyclerView.adapter = RideAdapter(rideItems)
+            ridesRecyclerView.adapter = RideAdapter(rideItems) // Set the adapter for the recyclerview
+        })*/
+        val sectionedAdapter = SectionedRecyclerViewAdapter()
+        var ridesMap: Map<String, List<Ride>> = emptyMap()
+
+        rideViewModel.rideItemLiveData.observe(viewLifecycleOwner, { rideItems ->
+            Log.d(TAG, "Got ride items: $rideItems")
+            ridesMap = LoadDatesUseCase(rideItems).execute(requireContext())
+            for ((key, value) in ridesMap.entries) {
+                if (value.isNotEmpty()) {
+                    Log.d(TAG, "section adapter $key $value")
+                    sectionedAdapter.addSection(context?.let { RidesSection(it, key, value) })
+                }
+            }
+            ridesRecyclerView.adapter = sectionedAdapter
         })
-    }
 
-    /** Holder for the ride card */
-    private inner class RideHolder(itemLayout: ConstraintLayout)
-        : RecyclerView.ViewHolder(itemLayout),
-        View.OnClickListener {
-        val timeStart: TextView = itemView.findViewById(R.id.text_card_starts_at)
-        val timeEnd: TextView = itemView.findViewById(R.id.text_card_ends_at)
-        val estPrice: TextView = itemView.findViewById(R.id.text_card_estimated_price)
-        val numRiders: TextView = itemView.findViewById(R.id.text_card_num_passengers)
-        val orderedWaypoints: TextView = itemView.findViewById(R.id.text_card_ordered_waypoints)
-
-        private lateinit var ride: Ride
-
-        init {
-            itemView.setOnClickListener(this)
-        }
-
-        fun bindRideItem(item: Ride) {
-            ride = item
-        }
-
-        override fun onClick(view: View) {
-            Toast.makeText(context, "Ride trip id: ${ride.tripId}", Toast.LENGTH_SHORT).show()
-            // TODO: Create intent, open new fragment
-        }
-    }
-
-    /** Holder for the header. Needs to be displayed for every day that has rides. */
-    private inner class HeaderHolder(itemLayout: ConstraintLayout): RecyclerView.ViewHolder(itemLayout) {
-        fun from(parent: ViewGroup): HeaderHolder {
-            val layoutInflater = LayoutInflater.from(parent.context)
-            val view = layoutInflater.inflate(
-                R.layout.list_item_trip_header, parent, false) as ConstraintLayout
-            return HeaderHolder(view)
-        }
     }
 
     private inner class RideAdapter(private val ride: List<Ride>) :
-        RecyclerView.Adapter<RideHolder>() {
+        RecyclerView.Adapter<RideAdapter.RideHolder>() {
 
         override fun onCreateViewHolder(
-            viewGroup: ViewGroup,
+            parent: ViewGroup,
             i: Int
         ): RideHolder {
             val view = layoutInflater.inflate(
                 R.layout.list_item_ride,
-                viewGroup,
+                parent,
                 false
             ) as ConstraintLayout
             return RideHolder(view)
@@ -215,6 +198,40 @@ class MyRidesFragment : Fragment() {
 
                 }*/
             }
+        }
+
+        /** Holder for the ride card */
+        inner class RideHolder(itemLayout: ConstraintLayout)
+            : RecyclerView.ViewHolder(itemLayout),
+            View.OnClickListener {
+            val timeStart: TextView = itemView.findViewById(R.id.text_card_starts_at)
+            val timeEnd: TextView = itemView.findViewById(R.id.text_card_ends_at)
+            val estPrice: TextView = itemView.findViewById(R.id.text_card_estimated_price)
+            val numRiders: TextView = itemView.findViewById(R.id.text_card_num_passengers)
+            val orderedWaypoints: TextView = itemView.findViewById(R.id.text_card_ordered_waypoints)
+
+            private lateinit var ride: Ride
+
+            init {
+                itemView.setOnClickListener(this)
+            }
+
+            fun bindRideItem(item: Ride) {
+                ride = item
+            }
+
+            override fun onClick(view: View) {
+                Toast.makeText(context, "Ride trip id: ${ride.tripId}", Toast.LENGTH_SHORT).show()
+                // TODO: Create intent, open new fragment
+            }
+        }
+
+        /** Holder for the header. Needs to be displayed for every day (section) that has rides. */
+        inner class HeaderHolder(itemLayout: ConstraintLayout):
+            RecyclerView.ViewHolder(itemLayout) {
+            val headerDate: TextView = itemView.findViewById(R.id.text_header_date)
+            val headerTimeRange: TextView = itemView.findViewById(R.id.text_header_time_range)
+            val headerEstPrice: TextView = itemView.findViewById(R.id.text_card_estimated_price)
         }
     }
 

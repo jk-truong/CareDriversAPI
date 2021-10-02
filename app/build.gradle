@@ -55,4 +55,7 @@ dependencies {
     // Coroutines for the My Rides header cards
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
 
+    // Sectioned Recyclerview for headers
+    implementation 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.+'
+
 }

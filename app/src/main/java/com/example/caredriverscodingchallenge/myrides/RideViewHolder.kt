@@ -10,7 +10,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.Section
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters
 
 /** Holder for the ride card */
-class RideHolder(itemLayout: ConstraintLayout)
+class RideViewHolder(itemLayout: ConstraintLayout)
     : RecyclerView.ViewHolder(itemLayout),
     View.OnClickListener {
     val timeStart: TextView = itemView.findViewById(R.id.text_card_starts_at)
@@ -18,7 +18,7 @@ class RideHolder(itemLayout: ConstraintLayout)
     val estPrice: TextView = itemView.findViewById(R.id.text_card_estimated_price)
     val numRiders: TextView = itemView.findViewById(R.id.text_card_num_passengers)
     val orderedWaypoints: TextView = itemView.findViewById(R.id.text_card_ordered_waypoints)
-
+    val rootView: View = itemLayout
     init {
         itemView.setOnClickListener(this)
     }

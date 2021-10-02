@@ -1,18 +1,15 @@
 package com.example.caredriverscodingchallenge.myrides
 
 import android.content.Context
-import android.content.res.Resources
 import android.util.Log
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section
 import androidx.recyclerview.widget.RecyclerView
-import com.example.caredriverscodingchallenge.MainActivity
 import com.example.caredriverscodingchallenge.R
-import com.example.caredriverscodingchallenge.RideHolder
+import com.example.caredriverscodingchallenge.RideViewHolder
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters
-import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
 import java.lang.Exception
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -22,10 +19,13 @@ private const val TAG = "RidesSection"
 private const val DATE_PARSE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 private const val DATE_FORMATTED_PATTERN = "h:mm a"
 
-internal class RidesSection(
+/** RidesSection takes in a date for the header and a list of rides that correspond to that date.
+ * @see: https://github.com/luizgrp/SectionedRecyclerViewAdapter */
+class RidesSection(
     private val context: Context, // Need context to access application resources (plurals)
     private val date: String,
-    private val ride: List<Ride>
+    private val ride: List<Ride>,
+    private val clickListener: ClickListener
 ) : Section(
     SectionParameters.builder()
         .itemResourceId(R.layout.list_item_ride)
@@ -40,11 +40,11 @@ internal class RidesSection(
 
     override fun getItemViewHolder(view: View?): RecyclerView.ViewHolder {
         // return a custom instance of ViewHolder for the items of this section
-        return RideHolder(view as ConstraintLayout)
+        return RideViewHolder(view as ConstraintLayout)
     }
 
     override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val viewHolder: RideHolder = holder as RideHolder
+        val viewHolder: RideViewHolder = holder as RideViewHolder
         val parsedStartTime = dateParse.parse(ride[position].startsAt)!!
         val parsedEndTime = dateParse.parse(ride[position].endsAt)!!
         val orderedWaypoint = ride[position].orderedWaypoints
@@ -57,15 +57,19 @@ internal class RidesSection(
         viewHolder.numRiders.text = getNumPassengersString(orderedWaypoint)
         viewHolder.orderedWaypoints.text = getOrderedWaypointsString(orderedWaypoint)
         viewHolder.estPrice.text = estPrice
+
+        viewHolder.rootView.setOnClickListener {
+            clickListener.onItemRootViewClicked(this, viewHolder.adapterPosition)
+        }
     }
 
     override fun getHeaderViewHolder(view: View?): RecyclerView.ViewHolder {
         // return an empty instance of ViewHolder for the headers of this section
-        return HeaderHolder(view as ConstraintLayout)
+        return HeaderViewHolder(view as ConstraintLayout)
     }
 
     override fun onBindHeaderViewHolder(holder: RecyclerView.ViewHolder?) {
-        val viewHolder: HeaderHolder = holder as HeaderHolder
+        val viewHolder: HeaderViewHolder = holder as HeaderViewHolder
 
         viewHolder.headerDate.text = date
         viewHolder.headerTimeRange.text = "5:00pm - 5:15pm"
@@ -73,7 +77,8 @@ internal class RidesSection(
     }
 
     /** Takes in a parsed date, formats it according to the pattern and returns a string with
-     * the time. */
+     * the time.
+     * @return a formatted time as a string */
     private fun getFormattedTimeString(parsedTimeDate: Date): String {
         /* Set start and end time */
         var formattedTime = ""
@@ -87,7 +92,8 @@ internal class RidesSection(
     }
 
     /** Takes in a list of OrderedWaypoint and returns a string containing number of riders
-     * and boosters. */
+     * and booster seats needed.
+     * @return a string containing number of riders and number of booster seats */
     private fun getNumPassengersString(orderedWaypoint: List<OrderedWaypoint>): String {
         var numPassengersString = ""
 
@@ -120,7 +126,8 @@ internal class RidesSection(
     }
 
     /** Takes in a list of OrderedWaypoint and returns a string containing the addresses.
-     * Each address has a line break. */
+     * Each address has a line break.
+     * @return a string containing the addresses */
     private fun getOrderedWaypointsString(orderedWaypoint: List<OrderedWaypoint>): String {
         /* For every waypoint, access location and get the address. Append the address to a
         * string */
@@ -139,7 +146,10 @@ internal class RidesSection(
     }
 
     interface ClickListener {
-
+        fun onItemRootViewClicked(
+            section: RidesSection,
+            itemAdapterPosition: Int
+        )
     }
 }
 

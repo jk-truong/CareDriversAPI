@@ -29,7 +29,7 @@ private const val DATE_PARSE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 private const val DATE_FORMATTED_PATTERN = "h:mm a"
 private const val ACTION_BAR_TITLE = "My Rides"
 
-class MyRidesFragment : Fragment() {
+class MyRidesFragment : Fragment(), RidesSection.ClickListener {
 
     private lateinit var rideViewModel: RideViewModel
     private lateinit var ridesRecyclerView: RecyclerView
@@ -67,25 +67,25 @@ class MyRidesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /*rideViewModel.rideItemLiveData.observe(viewLifecycleOwner, { rideItems ->
-            // Log.d(TAG, "Got ride items: $rideItems")
-            ridesRecyclerView.adapter = RideAdapter(rideItems) // Set the adapter for the recyclerview
-        })*/
+
         val sectionedAdapter = SectionedRecyclerViewAdapter()
-        var ridesMap: Map<String, List<Ride>> = emptyMap()
+        var ridesMap: Map<String, List<Ride>>
 
         rideViewModel.rideItemLiveData.observe(viewLifecycleOwner, { rideItems ->
-            Log.d(TAG, "Got ride items: $rideItems")
+            //Log.d(TAG, "Got ride items: $rideItems")
             ridesMap = LoadDatesUseCase(rideItems).execute(requireContext())
             for ((key, value) in ridesMap.entries) {
                 if (value.isNotEmpty()) {
-                    Log.d(TAG, "section adapter $key $value")
-                    sectionedAdapter.addSection(context?.let { RidesSection(it, key, value) })
+                    sectionedAdapter.addSection(context?.let { RidesSection(it, key, value, this) })
                 }
             }
             ridesRecyclerView.adapter = sectionedAdapter
         })
 
+    }
+
+    override fun onItemRootViewClicked(section: RidesSection, itemAdapterPosition: Int) {
+        Toast.makeText(context, "Position: $itemAdapterPosition", Toast.LENGTH_SHORT).show()
     }
 
     private inner class RideAdapter(private val ride: List<Ride>) :
@@ -240,6 +240,8 @@ class MyRidesFragment : Fragment() {
             return MyRidesFragment()
         }
     }
+
+
 }
 
 

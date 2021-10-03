@@ -2,17 +2,22 @@ package com.example.caredriverscodingchallenge
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProviders
 import com.example.caredriverscodingchallenge.fragments.MyRidesFragment
 import com.example.caredriverscodingchallenge.fragments.RideDetailsFragment
 import java.util.*
 
 private const val TAG = "MainActivity"
 
-
 class MainActivity : AppCompatActivity(), MyRidesFragment.Callbacks {
+
+    private lateinit var rideViewModel: RideViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        rideViewModel = ViewModelProviders.of(this).get(RideViewModel::class.java)
 
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
         if (currentFragment == null) {

@@ -59,11 +59,11 @@
         android:text="@string/est"
         android:layout_marginEnd="4dp"
         android:textColor="@color/hsd_blue"
-        app:layout_constraintEnd_toStartOf="@+id/text_card_estimated_price"
-        app:layout_constraintBottom_toBottomOf="@id/text_card_estimated_price" />
+        app:layout_constraintEnd_toStartOf="@+id/text_card_estimated_earnings"
+        app:layout_constraintBottom_toBottomOf="@id/text_card_estimated_earnings" />
 
     <TextView
-        android:id="@+id/text_card_estimated_price"
+        android:id="@+id/text_card_estimated_earnings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"

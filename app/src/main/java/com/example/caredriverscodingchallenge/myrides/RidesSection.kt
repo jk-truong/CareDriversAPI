@@ -7,7 +7,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import io.github.luizgrp.sectionedrecyclerviewadapter.Section
 import androidx.recyclerview.widget.RecyclerView
 import com.example.caredriverscodingchallenge.R
-import com.example.caredriverscodingchallenge.RideViewHolder
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters
 import java.lang.Exception
@@ -24,7 +23,7 @@ private const val DATE_FORMATTED_PATTERN = "h:mm a"
 class RidesSection(
     private val context: Context, // Need context to access application resources (plurals)
     private val date: String,
-    private val ride: List<Ride>,
+    private val rides: List<Ride>,
     private val clickListener: ClickListener
 ) : Section(
     SectionParameters.builder()
@@ -34,9 +33,8 @@ class RidesSection(
 ) {
 
     private val numberFormat: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
-    private val dateParse: SimpleDateFormat = SimpleDateFormat(DATE_PARSE_PATTERN, Locale.US)
 
-    override fun getContentItemsTotal(): Int = ride.size // number of items of this section
+    override fun getContentItemsTotal(): Int = rides.size // number of items of this section
 
     override fun getItemViewHolder(view: View?): RecyclerView.ViewHolder {
         // return a custom instance of ViewHolder for the items of this section
@@ -45,18 +43,18 @@ class RidesSection(
 
     override fun onBindItemViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewHolder: RideViewHolder = holder as RideViewHolder
-        val parsedStartTime = dateParse.parse(ride[position].startsAt)!!
-        val parsedEndTime = dateParse.parse(ride[position].endsAt)!!
-        val orderedWaypoint = ride[position].orderedWaypoints
-        val estPrice = numberFormat.format(
-            (ride[position].estimatedEarningsCents).div(100.0) // Div to get the cents
+        val startTime = rides[position].startsAt
+        val endTime = rides[position].endsAt
+        val orderedWaypoint = rides[position].orderedWaypoints
+        val estEarnings = numberFormat.format(
+            (rides[position].estimatedEarningsCents).div(100.0) // Div to get the cents
         )
-        // bind your view here
-        viewHolder.timeStart.text = getFormattedTimeString(parsedStartTime)
-        viewHolder.timeEnd.text = getFormattedTimeString(parsedEndTime)
+
+        viewHolder.timeStart.text = getTimeString(startTime)
+        viewHolder.timeEnd.text = getTimeString(endTime)
         viewHolder.numRiders.text = getNumPassengersString(orderedWaypoint)
         viewHolder.orderedWaypoints.text = getOrderedWaypointsString(orderedWaypoint)
-        viewHolder.estPrice.text = estPrice
+        viewHolder.estEarnings.text = estEarnings
 
         viewHolder.rootView.setOnClickListener {
             clickListener.onItemRootViewClicked(this, viewHolder.adapterPosition)
@@ -72,18 +70,37 @@ class RidesSection(
         val viewHolder: HeaderViewHolder = holder as HeaderViewHolder
 
         viewHolder.headerDate.text = date
-        viewHolder.headerTimeRange.text = "5:00pm - 5:15pm"
-        viewHolder.headerEstPrice.text = "toomuch4u"
+        viewHolder.headerTimeRange.text = getHeaderDateRange()
+        viewHolder.headerEstPrice.text = getEstimatedEarnings()
     }
 
-    /** Takes in a parsed date, formats it according to the pattern and returns a string with
-     * the time.
+    /** @return the estimated earnings for this list of rides */
+    private fun getEstimatedEarnings(): String {
+        var total= 0.0
+        for (ride in rides) {
+            total += (ride.estimatedEarningsCents).div(100.0)
+        }
+        return numberFormat.format(total)
+    }
+
+    /** Gets the date range of the list of rides
+     * @return date range for the header */
+    private fun getHeaderDateRange(): String {
+        val beginDate = rides[0].startsAt
+        val endDate = rides[rides.size - 1].endsAt
+        return "${getTimeString(beginDate)} - ${getTimeString(endDate)}"
+    }
+
+    /** Takes in a string date, parses and formats it according to the pattern and returns a string
+     * with the time.
      * @return a formatted time as a string */
-    private fun getFormattedTimeString(parsedTimeDate: Date): String {
-        /* Set start and end time */
+    private fun getTimeString(dateString: String): String {
+        val dateParse = SimpleDateFormat(DATE_PARSE_PATTERN, Locale.US)
+        val dateFormat = SimpleDateFormat(DATE_FORMATTED_PATTERN, Locale.US)
         var formattedTime = ""
+
         try {
-            val dateFormat = SimpleDateFormat(DATE_FORMATTED_PATTERN, Locale.US)
+            val parsedTimeDate = dateParse.parse(dateString)!!
             formattedTime = dateFormat.format(parsedTimeDate)
         } catch (e: Exception) {
             Log.e(TAG, "Could not format the date $e")
@@ -105,7 +122,8 @@ class RidesSection(
 
         /* Find the number of booster seats needed. Only need to look in the first waypoint
         * that is anchored because that contains all of the passengers throughout the ride.
-        * (I could be wrong about this, but from the given json I have inferred these rules) */
+        * (I could be wrong about this, maybe there are multiple starting waypoints but from
+        * the given json I have inferred these rules) */
         var numBoosters = 0
         for (passenger in orderedWaypoint[0].passengers) {
             if (passenger.boosterSeat) {

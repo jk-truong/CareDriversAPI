@@ -6,10 +6,15 @@
         <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/drawable-night/border.xml" value="0.553125" />
         <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/drawable-notnight/border.xml" value="0.553125" />
         <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/drawable/border.xml" value="0.553125" />
+        <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/drawable/circle.xml" value="0.4583333333333333" />
+        <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/drawable/diamond.xml" value="0.3203125" />
         <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/layout/fragment_my_rides.xml" value="0.261144883485309" />
         <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/layout/fragment_ride_details.xml" value="0.473731884057971" />
+        <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/layout/list_item_address.xml" value="0.5067934782608695" />
         <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/layout/list_item_ride.xml" value="0.5369791666666667" />
         <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/layout/list_item_trip_header.xml" value="0.38858695652173914" />
+        <entry key="..\:/Android Projects/CareDriversCodingChallenge/app/src/main/res/menu/menu_ride_detail.xml" value="0.5369791666666667" />
+        <entry key="..\:/Users/Josh/.gradle/caches/transforms-3/05d401bccdd1e06b250357a305a89b12/transformed/appcompat-1.3.1/res/drawable/abc_ic_ab_back_material.xml" value="0.33541666666666664" />
         <entry key="..\:/Users/Josh/AndroidStudioProjects/BabyLearnOnline/CareDriversCodingChallenge/app/src/main/res/drawable/border.xml" value="0.33541666666666664" />
         <entry key="..\:/Users/Josh/AndroidStudioProjects/BabyLearnOnline/CareDriversCodingChallenge/app/src/main/res/layout/activity_main.xml" value="0.4628623188405797" />
         <entry key="..\:/Users/Josh/AndroidStudioProjects/BabyLearnOnline/CareDriversCodingChallenge/app/src/main/res/layout/fragment_my_rides.xml" value="0.45063405797101447" />

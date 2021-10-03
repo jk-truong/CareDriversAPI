@@ -38,9 +38,7 @@ class MyRidesFragment : Fragment(), RideSection.ClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-
-        rideViewModel = ViewModelProviders.of(this).get(RideViewModel::class.java)
-
+        rideViewModel = ViewModelProviders.of(requireActivity()).get(RideViewModel::class.java)
         (activity as MainActivity?)?.setActionBarTitle(ACTION_BAR_TITLE)
     }
 
@@ -75,6 +73,11 @@ class MyRidesFragment : Fragment(), RideSection.ClickListener {
             }
             ridesRecyclerView.adapter = sectionedAdapter
         })
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
     }
 
     override fun onItemRootViewClicked(tripId: Int) {

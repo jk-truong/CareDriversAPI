@@ -19,7 +19,7 @@ private const val TAG = "RidesSection"
 /** RideSection takes in a date for the header and a list of rides that correspond to that date.
  * @see: https://github.com/luizgrp/SectionedRecyclerViewAdapter */
 class RideSection(
-    private val context: Context, // Need context to access application resources (plurals)
+    context: Context, // Need context to access application resources (plurals)
     private val date: String,
     private val rides: List<Ride>,
     private val clickListener: ClickListener
@@ -74,7 +74,7 @@ class RideSection(
 
     interface ClickListener {
         fun onItemRootViewClicked(
-            itemAdapterId: Int
+            tripId: Int
         )
     }
 }

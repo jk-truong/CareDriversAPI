@@ -58,23 +58,26 @@ class ParseJsonStuff(context: Context) {
      * @return a string containing number of riders and number of booster seats needed */
     fun getNumPassengersString(orderedWaypoint: List<OrderedWaypoint>): String {
         var numPassengersString = ""
-        // TODO: Check for "anchor = true" instead of going to the first waypoint
         /* Find the number of passengers and set the appropriate plurals for 'rider' */
-        val numPassengers = orderedWaypoint[0].passengers.size
+        var numPassengers = 0
+        var numBoosters = 0
+
+        /* Check if waypoint is an anchor (pickup). Then check for each passenger if a booster seat
+        * is needed. */
+        for (waypoint in orderedWaypoint) {
+            if (waypoint.anchor) {
+                numPassengers += waypoint.passengers.size
+                // Find number of booster seats
+                for (passenger in waypoint.passengers) {
+                    if (passenger.boosterSeat) {
+                        numBoosters++ // Increment counter for every booster seat
+                    }
+                }
+            }
+        }
         val stringRiders =
             mcontext.resources?.getQuantityString(R.plurals.riders, numPassengers)
         numPassengersString = "($numPassengers $stringRiders"
-
-        /* Find the number of booster seats needed. Only need to look in the first waypoint
-        * that is anchored because that contains all of the passengers throughout the ride.
-        * (I could be wrong about this, maybe there are multiple starting waypoints but from
-        * the given json I have inferred these rules) */
-        var numBoosters = 0
-        for (passenger in orderedWaypoint[0].passengers) {
-            if (passenger.boosterSeat) {
-                numBoosters++ // Increment counter for every booster seat
-            }
-        }
 
         /* If there are booster seats, concatenate number of booster seats required to the
         * numPassengersString. Else, just add closing parenthesis */

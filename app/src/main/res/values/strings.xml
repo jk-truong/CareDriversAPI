@@ -7,4 +7,8 @@
     <string name="em_dash">—</string>
     <string name="est">est.</string>
     <string name="this_trip_is_part_of_a_series">This trip is part of a series</string>
+    <string name="drop_off">Drop-off</string>
+    <string name="pickup">Pickup</string>
+    <string name="anchor_placeholder">Pickup</string>
+    <string name="address_placeholder">1 World Way, Los Angeles, CA</string>
 </resources>

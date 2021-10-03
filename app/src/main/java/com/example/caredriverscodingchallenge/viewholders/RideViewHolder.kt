@@ -1,4 +1,4 @@
-package com.example.caredriverscodingchallenge.myrides
+package com.example.caredriverscodingchallenge.viewholders
 
 import android.view.View
 import android.widget.TextView

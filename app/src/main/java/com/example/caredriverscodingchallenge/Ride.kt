@@ -1,11 +1,11 @@
-package com.example.caredriverscodingchallenge.myrides
+package com.example.caredriverscodingchallenge.adapters
 
 import com.google.gson.annotations.SerializedName
 
 /** This data class is the model for Ride */
 data class Ride(
-    @SerializedName("trip_id") var tripId: Int = 0,
-    @SerializedName("in_series") var inSeries: Boolean = false,
+    @SerializedName("trip_id") var tripId: Int,
+    @SerializedName("in_series") var inSeries: Boolean,
     @SerializedName("starts_at") var startsAt: String,
     @SerializedName("ends_at") var endsAt: String,
     @SerializedName("estimated_earnings_cents") var estimatedEarningsCents: Int,

@@ -6,4 +6,5 @@
     <string name="cancel_trip">Cancel This Trip</string>
     <string name="em_dash">—</string>
     <string name="est">est.</string>
+    <string name="this_trip_is_part_of_a_series">This trip is part of a series</string>
 </resources>

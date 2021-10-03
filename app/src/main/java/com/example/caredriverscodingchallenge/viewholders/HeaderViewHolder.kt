@@ -1,4 +1,4 @@
-package com.example.caredriverscodingchallenge.myrides
+package com.example.caredriverscodingchallenge.viewholders
 
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -10,5 +10,5 @@ class HeaderViewHolder(itemLayout: ConstraintLayout):
     RecyclerView.ViewHolder(itemLayout) {
     val headerDate: TextView = itemView.findViewById(R.id.text_header_date)
     val headerTimeRange: TextView = itemView.findViewById(R.id.text_header_time_range)
-    val headerEstPrice: TextView = itemView.findViewById(R.id.text_header_estimated_price)
+    val headerEstPrice: TextView = itemView.findViewById(R.id.text_header_estimated_earnings)
 }

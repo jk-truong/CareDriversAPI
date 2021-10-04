@@ -19,9 +19,7 @@ fragment to be in portrait only.
 
 Some improvements: 
 - Touch up the UI.
-- Fix the rotation  bugs with the mapview. 
-- Maybe there is a better way to access the ride object for the ride detailsfragment, right now I 
-  have it iterating through the whole list of rides until the tripId matches.
+- Fix the rotation bugs with the mapview. 
 - There's some deprecated stuff that I would like to update. 
 - Clean up some of the code in the RideDetailsFragment (adding the map functions made it messy).
 - A few other things that I should fix but don't know that I should fix.

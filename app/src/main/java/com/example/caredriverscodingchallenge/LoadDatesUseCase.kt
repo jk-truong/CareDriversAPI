@@ -55,6 +55,4 @@ class LoadDatesUseCase(context: Context, private val rides: List<Ride>) {
         }
         return ridesList
     }
-
-
 }

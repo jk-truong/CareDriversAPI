@@ -1,11 +1,13 @@
 package com.example.caredriverscodingchallenge.fragments
 
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,8 +39,7 @@ class MyRidesFragment : Fragment(), RideSection.ClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        retainInstance = true
-        rideViewModel = ViewModelProviders.of(requireActivity()).get(RideViewModel::class.java)
+        rideViewModel = ViewModelProvider(requireActivity()).get(RideViewModel::class.java)
         (activity as MainActivity?)?.setActionBarTitle(ACTION_BAR_TITLE)
     }
 

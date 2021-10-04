@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.example.caredriverscodingchallenge.adapters.Ride
 import com.example.caredriverscodingchallenge.fragments.MyRidesFragment
 import com.example.caredriverscodingchallenge.fragments.RideDetailsFragment
 import java.util.*
@@ -30,8 +31,8 @@ class MainActivity : AppCompatActivity(), MyRidesFragment.Callbacks {
         }
     }
 
-    override fun onRideSelected(tripId: Int) {
-        val fragment = RideDetailsFragment.newInstance(tripId)
+    override fun onRideSelected() {
+        val fragment = RideDetailsFragment.newInstance()
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, fragment)

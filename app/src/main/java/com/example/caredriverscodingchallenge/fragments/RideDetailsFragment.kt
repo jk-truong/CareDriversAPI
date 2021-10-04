@@ -99,22 +99,15 @@ class RideDetailsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val tripId = arguments?.getSerializable(ARG_TRIP_ID) as Int
 
         /* Set the back button only for this fragment */
         toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
         toolbar.setNavigationOnClickListener { requireActivity().onBackPressed() }
 
-        /* Need to get the correct ride before we update any of the UI elements including
-        * the recyclerview */
-        rideViewModel.rideItemLiveData.observe(viewLifecycleOwner, { rideItem ->
-            for (item in rideItem) { // Iterate until tripId matches, assuming that it is unique
-                if (item.tripId == tripId) {
-                    this.ride = item // Set ride
-                    updateUI()
-                    break
-                }
-            }
+        rideViewModel.getSelectedRide().observe(viewLifecycleOwner, {rideItem ->
+            Log.d(TAG, "got ride: $rideItem")
+            ride = rideItem
+            updateUI()
         })
 
         btnCancelTrip.setOnClickListener {
@@ -280,9 +273,9 @@ class RideDetailsFragment : Fragment(), OnMapReadyCallback {
     }
 
     companion object {
-        fun newInstance(tripId: Int): RideDetailsFragment {
+        fun newInstance(): RideDetailsFragment {
             val args = Bundle().apply {
-                putSerializable(ARG_TRIP_ID, tripId)
+
             }
             return RideDetailsFragment().apply {
                 arguments = args

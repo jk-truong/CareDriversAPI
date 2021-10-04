@@ -55,7 +55,7 @@ class RideSection(
         viewHolder.estEarnings.text = estEarnings
 
         viewHolder.rootView.setOnClickListener {
-            clickListener.onItemRootViewClicked(rides[position].tripId)
+            clickListener.onItemRootViewClicked(rides[position])
         }
     }
 
@@ -74,7 +74,7 @@ class RideSection(
 
     interface ClickListener {
         fun onItemRootViewClicked(
-            tripId: Int
+            ride: Ride
         )
     }
 }

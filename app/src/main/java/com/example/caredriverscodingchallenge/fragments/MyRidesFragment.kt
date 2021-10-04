@@ -29,7 +29,7 @@ class MyRidesFragment : Fragment(), RideSection.ClickListener {
     private var callbacks : Callbacks? = null
 
     interface Callbacks {
-        fun onRideSelected(tripId: Int)
+        fun onRideSelected()
     }
 
     override fun onAttach(context: Context) {
@@ -81,8 +81,9 @@ class MyRidesFragment : Fragment(), RideSection.ClickListener {
         callbacks = null
     }
 
-    override fun onItemRootViewClicked(tripId: Int) {
-        callbacks?.onRideSelected(tripId)
+    override fun onItemRootViewClicked(ride: Ride) {
+        rideViewModel.selectRide(ride) // Set the ride that the user clicked
+        callbacks?.onRideSelected()
     }
 
     companion object {

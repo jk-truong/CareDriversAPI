@@ -2,9 +2,7 @@ package com.example.caredriverscodingchallenge.fragments
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,7 +24,7 @@ import com.example.caredriverscodingchallenge.ParseJsonStuff
 import com.example.caredriverscodingchallenge.R
 import com.example.caredriverscodingchallenge.RideViewModel
 import com.example.caredriverscodingchallenge.adapters.AddressAdapter
-import com.example.caredriverscodingchallenge.adapters.Ride
+import com.example.caredriverscodingchallenge.Ride
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -264,12 +262,7 @@ class RideDetailsFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
         fun newInstance(): RideDetailsFragment {
-            val args = Bundle().apply {
-
-            }
-            return RideDetailsFragment().apply {
-                arguments = args
-            }
+            return RideDetailsFragment()
         }
     }
 }

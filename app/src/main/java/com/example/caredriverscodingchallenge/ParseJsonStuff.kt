@@ -2,8 +2,6 @@ package com.example.caredriverscodingchallenge
 
 import android.content.Context
 import android.util.Log
-import com.example.caredriverscodingchallenge.adapters.OrderedWaypoint
-import com.example.caredriverscodingchallenge.adapters.Ride
 import java.lang.Exception
 import java.text.NumberFormat
 import java.text.SimpleDateFormat

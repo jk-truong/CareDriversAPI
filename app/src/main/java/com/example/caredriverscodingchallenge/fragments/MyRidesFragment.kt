@@ -13,12 +13,11 @@ import com.example.caredriverscodingchallenge.MainActivity
 import com.example.caredriverscodingchallenge.R
 import com.example.caredriverscodingchallenge.RideViewModel
 import com.example.caredriverscodingchallenge.LoadDatesUseCase
-import com.example.caredriverscodingchallenge.adapters.Ride
+import com.example.caredriverscodingchallenge.Ride
 import com.example.caredriverscodingchallenge.adapters.RideSection
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
 
 private const val TAG = "MyRidesFragment"
-private const val ACTION_BAR_TITLE = "My Rides"
 
 class MyRidesFragment : Fragment(), RideSection.ClickListener {
 
@@ -38,7 +37,6 @@ class MyRidesFragment : Fragment(), RideSection.ClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         rideViewModel = ViewModelProvider(requireActivity()).get(RideViewModel::class.java)
-        (activity as MainActivity?)?.setActionBarTitle(ACTION_BAR_TITLE)
     }
 
     override fun onCreateView(
@@ -67,7 +65,7 @@ class MyRidesFragment : Fragment(), RideSection.ClickListener {
             ridesMap = LoadDatesUseCase(requireContext(), rideItems).execute()
             for ((key, value) in ridesMap.entries) { // For every map item, add a section
                 if (value.isNotEmpty()) {
-                    sectionedAdapter.addSection(context?.let { RideSection(it, key, value, this) })
+                    sectionedAdapter.addSection(RideSection(requireContext(), key, value, this))
                 }
             }
             ridesRecyclerView.adapter = sectionedAdapter

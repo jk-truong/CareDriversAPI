@@ -3,10 +3,7 @@ package com.example.caredriverscodingchallenge.api
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.caredriverscodingchallenge.api.HsdApi
-import com.example.caredriverscodingchallenge.api.HsdResponse
-import com.example.caredriverscodingchallenge.api.RideResponse
-import com.example.caredriverscodingchallenge.adapters.Ride
+import com.example.caredriverscodingchallenge.Ride
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,7 +27,7 @@ class RideFetcher {
         hsdApi = retrofit.create(HsdApi::class.java)
     }
 
-    /** Returns a MutableLiveData list of rides */
+    /** @return: a LiveData list of rides */
     fun fetchRides(): LiveData<List<Ride>> {
         val responseLiveData: MutableLiveData<List<Ride>> = MutableLiveData()
         val hsdRequest: Call<HsdResponse> = hsdApi.fetchRides()

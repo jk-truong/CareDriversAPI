@@ -3,11 +3,8 @@ package com.example.caredriverscodingchallenge
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import com.example.caredriverscodingchallenge.adapters.Ride
 import com.example.caredriverscodingchallenge.fragments.MyRidesFragment
 import com.example.caredriverscodingchallenge.fragments.RideDetailsFragment
-import java.util.*
 
 private const val TAG = "MainActivity"
 
@@ -38,9 +35,5 @@ class MainActivity : AppCompatActivity(), MyRidesFragment.Callbacks {
             .replace(R.id.fragment_container, fragment)
             .addToBackStack(null)
             .commit()
-    }
-
-    fun setActionBarTitle(title: String?) {
-        supportActionBar?.title = title
     }
 }

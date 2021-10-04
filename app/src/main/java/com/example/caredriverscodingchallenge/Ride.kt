@@ -1,4 +1,4 @@
-package com.example.caredriverscodingchallenge.adapters
+package com.example.caredriverscodingchallenge
 
 import com.google.gson.annotations.SerializedName
 
@@ -15,21 +15,21 @@ data class Ride(
 )
 
 data class OrderedWaypoint(
-    @SerializedName("id") var id: Int = 0,
-    @SerializedName("anchor") var anchor: Boolean = false,
-    @SerializedName("passengers") var passengers: List<Passenger> = emptyList(),
-    @SerializedName("location") var location: Location = Location()
+    @SerializedName("id") var id: Int,
+    @SerializedName("anchor") var anchor: Boolean,
+    @SerializedName("passengers") var passengers: List<Passenger>,
+    @SerializedName("location") var location: Location
 )
 
 data class Passenger(
-    @SerializedName("id") var id: Int = 0,
-    @SerializedName("booster_seat") var boosterSeat: Boolean = false,
-    @SerializedName("first_name") var firstName: String = ""
+    @SerializedName("id") var id: Int,
+    @SerializedName("booster_seat") var boosterSeat: Boolean,
+    @SerializedName("first_name") var firstName: String
 )
 
 data class Location(
-    @SerializedName("address") var address: String = "",
-    @SerializedName("lat") var lat: Double = 0.0,
-    @SerializedName("lng") var lng: Double = 0.0
+    @SerializedName("address") var address: String,
+    @SerializedName("lat") var lat: Double,
+    @SerializedName("lng") var lng: Double
 )
 

@@ -1,7 +1,6 @@
 package com.example.caredriverscodingchallenge
 
 import android.content.Context
-import com.example.caredriverscodingchallenge.adapters.Ride
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -9,6 +8,7 @@ private const val TAG = "LoadDatesUseCase"
 
 class LoadDatesUseCase(context: Context, private val rides: List<Ride>) {
     private val globFunc = ParseJsonStuff(context)
+
     /** @return a mutable map containing days and list of rides in that day */
     fun execute(): Map<String, List<Ride>> {
         val map: MutableMap<String, List<Ride>> = LinkedHashMap<String, List<Ride>>()

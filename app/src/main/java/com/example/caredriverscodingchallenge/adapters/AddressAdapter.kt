@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.caredriverscodingchallenge.OrderedWaypoint
 import com.example.caredriverscodingchallenge.R
 import com.example.caredriverscodingchallenge.viewholders.AddressViewHolder
 
@@ -16,6 +17,7 @@ class AddressAdapter(
 ) : RecyclerView.Adapter<AddressViewHolder>() {
     private val myContext = context
     private val myLayoutInflater = layoutInflater
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

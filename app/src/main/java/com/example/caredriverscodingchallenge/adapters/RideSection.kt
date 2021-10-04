@@ -7,6 +7,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.Section
 import androidx.recyclerview.widget.RecyclerView
 import com.example.caredriverscodingchallenge.ParseJsonStuff
 import com.example.caredriverscodingchallenge.R
+import com.example.caredriverscodingchallenge.Ride
 import com.example.caredriverscodingchallenge.viewholders.HeaderViewHolder
 import com.example.caredriverscodingchallenge.viewholders.RideViewHolder
 

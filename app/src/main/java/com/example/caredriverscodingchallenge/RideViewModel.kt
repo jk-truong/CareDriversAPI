@@ -3,7 +3,6 @@ package com.example.caredriverscodingchallenge
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.caredriverscodingchallenge.adapters.Ride
 import com.example.caredriverscodingchallenge.api.RideFetcher
 
 /** Shared ViewModel */

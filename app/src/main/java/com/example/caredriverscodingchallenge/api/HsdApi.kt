@@ -9,9 +9,4 @@ interface HsdApi {
 
     @GET("hsd-interview-resources/simplified_my_rides_response.json")
     fun fetchRides(): Call<HsdResponse>
-
-    @GET("hsd-interview-resources/simplified_my_rides_response.json")
-    fun getRideWithId(
-        @Query("trip_id") tripId: Int?
-    ): Call<RideResponse>
 }

@@ -13,11 +13,11 @@ class RideViewModel : ViewModel() {
 
     private val selectedRideItemLiveData = MutableLiveData<Ride>()
 
-    fun selectRide(item: Ride) {
+    fun setRide(item: Ride) {
         selectedRideItemLiveData.value = item
     }
 
-    fun getSelectedRide(): MutableLiveData<Ride> {
+    fun getRide(): MutableLiveData<Ride> {
         return selectedRideItemLiveData
     }
 

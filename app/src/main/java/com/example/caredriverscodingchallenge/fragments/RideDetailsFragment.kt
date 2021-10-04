@@ -16,7 +16,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -104,7 +103,7 @@ class RideDetailsFragment : Fragment(), OnMapReadyCallback {
         toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
         toolbar.setNavigationOnClickListener { requireActivity().onBackPressed() }
 
-        rideViewModel.getSelectedRide().observe(viewLifecycleOwner, {rideItem ->
+        rideViewModel.getRide().observe(viewLifecycleOwner, { rideItem ->
             Log.d(TAG, "got ride: $rideItem")
             ride = rideItem
             updateUI()

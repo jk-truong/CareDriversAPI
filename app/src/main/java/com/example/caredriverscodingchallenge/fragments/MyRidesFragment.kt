@@ -1,14 +1,12 @@
 package com.example.caredriverscodingchallenge.fragments
 
 import android.content.Context
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.caredriverscodingchallenge.MainActivity
@@ -82,7 +80,7 @@ class MyRidesFragment : Fragment(), RideSection.ClickListener {
     }
 
     override fun onItemRootViewClicked(ride: Ride) {
-        rideViewModel.selectRide(ride) // Set the ride that the user clicked
+        rideViewModel.setRide(ride) // Set the ride that the user clicked
         callbacks?.onRideSelected()
     }
 

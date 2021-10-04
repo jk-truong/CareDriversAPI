@@ -5,4 +5,5 @@ object Constants {
     const val DATE_YEAR_PATTERN = "yyyy/DD"
     const val DATE_HEADER_PATTERN = "E M/dd"
     const val DATE_TIME_PATTERN = "h:mm a"
+    const val MAPVIEW_BUNDLE_KEY = "MapViewBundleKey"
 }

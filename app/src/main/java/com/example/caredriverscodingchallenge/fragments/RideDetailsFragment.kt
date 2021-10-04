@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -73,10 +74,6 @@ class RideDetailsFragment : Fragment(), OnMapReadyCallback {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_ride_details, container, false)
 
-        /* I'm forcing the screen orientation to portrait because rotation on this fragment causes
-        * crashes. The mapview has been causing issues and I haven't had time to fix those bugs yet */
-        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
         toolbar = view.findViewById(R.id.toolbar)
         date = view.findViewById(R.id.text_date)
         timeRange = view.findViewById(R.id.text_time_range)
@@ -112,12 +109,6 @@ class RideDetailsFragment : Fragment(), OnMapReadyCallback {
         btnCancelTrip.setOnClickListener {
             Toast.makeText(context, "Cancel trip pressed", Toast.LENGTH_LONG).show()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        // Set back to normal
-        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 
     private fun updateUI() {

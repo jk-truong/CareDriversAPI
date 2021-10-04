@@ -24,3 +24,4 @@ Some improvements:
   have it iterating through the whole list of rides until the tripId matches.
 - There's some deprecated stuff that I would like to update. 
 - Clean up some of the code in the RideDetailsFragment (adding the map functions made it messy).
+- A few other things that I should fix but don't know that I should fix.

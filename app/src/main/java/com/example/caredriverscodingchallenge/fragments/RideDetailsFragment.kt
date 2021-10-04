@@ -64,7 +64,6 @@ class RideDetailsFragment : Fragment(), OnMapReadyCallback {
         rideViewModel = ViewModelProvider(requireActivity()).get(RideViewModel::class.java)
     }
 
-    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

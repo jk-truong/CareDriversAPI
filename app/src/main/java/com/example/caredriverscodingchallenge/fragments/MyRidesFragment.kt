@@ -62,7 +62,7 @@ class MyRidesFragment : Fragment(), RideSection.ClickListener {
 
         rideViewModel.rideItemLiveData.observe(viewLifecycleOwner, { rideItems ->
             //Log.d(TAG, "Got ride items: $rideItems")
-            ridesMap = LoadDatesUseCase(requireContext(), rideItems).execute()
+            ridesMap = LoadDatesUseCase(rideItems).execute()
             for ((key, value) in ridesMap.entries) { // For every map item, add a section
                 if (value.isNotEmpty()) {
                     sectionedAdapter.addSection(RideSection(requireContext(), key, value, this))

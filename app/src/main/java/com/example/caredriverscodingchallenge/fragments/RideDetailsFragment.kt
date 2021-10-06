@@ -59,7 +59,7 @@ class RideDetailsFragment : Fragment(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        globFunc = ParseJsonStuff(requireContext())
+        globFunc = ParseJsonStuff()
         // SharedViewModel from activity
         rideViewModel = ViewModelProvider(requireActivity()).get(RideViewModel::class.java)
     }
@@ -110,17 +110,21 @@ class RideDetailsFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateUI() {
         val numberFormat: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
-        val timeRangeStr = globFunc.getFormattedDate(ride.startsAt, Constants.DATE_PARSE_PATTERN,
-            Constants.DATE_TIME_PATTERN) + " — " + globFunc.getFormattedDate(ride.endsAt,
-            Constants.DATE_PARSE_PATTERN, Constants.DATE_TIME_PATTERN)
+        val startTime = globFunc.getFormattedDate(ride.startsAt, Constants.DATE_PARSE_PATTERN,
+            Constants.DATE_TIME_PATTERN)
+        val endTime = globFunc.getFormattedDate(ride.endsAt, Constants.DATE_PARSE_PATTERN,
+            Constants.DATE_TIME_PATTERN)
+        val headerDate = globFunc.getFormattedDate(ride.startsAt,
+            Constants.DATE_PARSE_PATTERN, Constants.DATE_HEADER_PATTERN)
+        val timeRangeStr = "$startTime — $endTime"
         val tripInfoStr = "Trip ID: ${ride.tripId} • " +
                 "${ride.estimatedRideMiles}mi • ${ride.estimatedRideMinutes} min"
+        val estEarningsDollars = numberFormat.format(ride.estimatedEarningsCents.div(100.0))
         val orderedWaypoints = ride.orderedWaypoints
 
-        date.text = globFunc.getFormattedDate(ride.startsAt,
-            Constants.DATE_PARSE_PATTERN, Constants.DATE_HEADER_PATTERN)
+        date.text = headerDate
         timeRange.text = timeRangeStr
-        estEarnings.text = numberFormat.format(ride.estimatedEarningsCents.div(100.0))
+        estEarnings.text = estEarningsDollars
         isSeries.isVisible = ride.inSeries
         tripInfo.text = tripInfoStr
         addressListRecyclerView.adapter = AddressAdapter(
@@ -179,10 +183,11 @@ class RideDetailsFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setUpMap() {
-        map.uiSettings.isZoomControlsEnabled = true
-        map.mapType = GoogleMap.MAP_TYPE_NORMAL
         val orderedWaypoints = ride.orderedWaypoints
         val latLngList: MutableList<LatLng> = mutableListOf()
+
+        map.uiSettings.isZoomControlsEnabled = true
+        map.mapType = GoogleMap.MAP_TYPE_NORMAL
         // Set marker for map position
         for (address in orderedWaypoints) {
             val lat = address.location.lat

@@ -20,7 +20,7 @@ private const val TAG = "RidesSection"
 /** RideSection takes in a date for the header and a list of rides that correspond to that date.
  * @see: https://github.com/luizgrp/SectionedRecyclerViewAdapter */
 class RideSection(
-    context: Context, // Need context to access application resources (plurals)
+    private val context: Context, // Need context to access application resources (plurals)
     private val date: String,
     private val rides: List<Ride>,
     private val clickListener: ClickListener
@@ -30,7 +30,7 @@ class RideSection(
         .headerResourceId(R.layout.list_item_trip_header)
         .build()
 ) {
-    private val globFunc = ParseJsonStuff(context)
+    private val globFunc = ParseJsonStuff()
     private val numberFormat: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
 
     override fun getContentItemsTotal(): Int = rides.size // number of items of this section
@@ -51,7 +51,7 @@ class RideSection(
 
         viewHolder.timeStart.text = globFunc.getTimeString(startTime)
         viewHolder.timeEnd.text = globFunc.getTimeString(endTime)
-        viewHolder.numRiders.text = globFunc.getNumPassengersString(orderedWaypoint)
+        viewHolder.numRiders.text = globFunc.getNumPassengersString(context, orderedWaypoint)
         viewHolder.orderedWaypoints.text = globFunc.getOrderedWaypointsString(orderedWaypoint)
         viewHolder.estEarnings.text = estEarnings
 

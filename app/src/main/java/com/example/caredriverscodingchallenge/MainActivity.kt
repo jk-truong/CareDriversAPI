@@ -10,13 +10,9 @@ private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity(), MyRidesFragment.Callbacks {
 
-    private lateinit var rideViewModel: RideViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        rideViewModel = ViewModelProvider(this).get(RideViewModel::class.java)
 
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
         if (currentFragment == null) {

@@ -6,10 +6,10 @@ import kotlin.collections.ArrayList
 
 private const val TAG = "LoadDatesUseCase"
 
-class LoadDatesUseCase(context: Context, private val rides: List<Ride>) {
-    private val globFunc = ParseJsonStuff(context)
+class LoadDatesUseCase(private val rides: List<Ride>) {
+    private val globFunc = ParseJsonStuff()
 
-    /** @return a mutable map containing days and list of rides in that day */
+    /** @return a map containing days and list of rides in that day */
     fun execute(): Map<String, List<Ride>> {
         val map: MutableMap<String, List<Ride>> = LinkedHashMap<String, List<Ride>>()
         var currentDay = ""

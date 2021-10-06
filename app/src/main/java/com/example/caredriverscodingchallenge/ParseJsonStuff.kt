@@ -11,12 +11,7 @@ private const val TAG = "ParseJsonStuff"
 
 private val numberFormat: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
 
-class ParseJsonStuff(context: Context) {
-    var mcontext = context
-
-    init {
-        mcontext = context
-    }
+class ParseJsonStuff {
 
     /**@param rides Takes in a list of rides
      * @return the sum of all estimated earnings for that list of rides */
@@ -54,7 +49,7 @@ class ParseJsonStuff(context: Context) {
 
     /**@param orderedWaypoint Takes in a list of OrderedWaypoint
      * @return a string containing number of riders and number of booster seats needed */
-    fun getNumPassengersString(orderedWaypoint: List<OrderedWaypoint>): String {
+    fun getNumPassengersString(context: Context, orderedWaypoint: List<OrderedWaypoint>): String {
         var numPassengersString = ""
         /* Find the number of passengers and set the appropriate plurals for 'rider' */
         var numPassengers = 0
@@ -74,14 +69,14 @@ class ParseJsonStuff(context: Context) {
             }
         }
         val stringRiders =
-            mcontext.resources?.getQuantityString(R.plurals.riders, numPassengers)
+            context.resources?.getQuantityString(R.plurals.riders, numPassengers)
         numPassengersString = "($numPassengers $stringRiders"
 
         /* If there are booster seats, concatenate number of booster seats required to the
         * numPassengersString. Else, just add closing parenthesis */
         numPassengersString += if (numBoosters > 0) {
             val stringBoosters =
-                mcontext.resources?.getQuantityString(R.plurals.boosters, numBoosters)
+                context.resources?.getQuantityString(R.plurals.boosters, numBoosters)
             " • $numBoosters $stringBoosters)"
         } else {
             ")"
@@ -109,11 +104,11 @@ class ParseJsonStuff(context: Context) {
     }
 
     /** Takes in a date string and returns a string with the date formatted according to the pattern
-     * declared at the top of class.
+     * provided.
      * @param dateString string containing your date
      * @param dateParsePattern the pattern of the date you are passing to dateString
      * @param dateFormatPattern determines how the return string looks
-     * @return String */
+     * @return String with your formatted date*/
     fun getFormattedDate(dateString: String, dateParsePattern: String,
                                  dateFormatPattern: String): String {
         val dateParse = SimpleDateFormat(dateParsePattern, Locale.US)

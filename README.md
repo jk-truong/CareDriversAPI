@@ -22,4 +22,5 @@ Some improvements:
 - ~~Fix the rotation bugs with the mapview.~~
 - There's some deprecated stuff that I would like to update. 
 - Clean up some of the code in the RideDetailsFragment (adding the map functions made it messy).
+- Add Unit tests
 - A few other things that I should fix but don't know that I should fix.

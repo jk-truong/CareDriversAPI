@@ -24,7 +24,7 @@ class ParseJsonStuff {
     }
 
     /**@param rides Takes in a list of rides
-     * @return date range of all the rides */
+     * @return date range of all the rides as a string */
     fun getHeaderDateRange(rides: List<Ride>): String {
         val beginDate = rides[0].startsAt
         val endDate = rides[rides.size - 1].endsAt

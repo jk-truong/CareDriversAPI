@@ -39,14 +39,23 @@ class ParseJsonStuffTest : TestCase() {
 
     @Test
     fun testGetEstimatedEarnings_returnsString() {
-        rideItem[0].estimatedEarningsCents = 1000
         val result = parseJsonStuff.getEstimatedEarnings(rideItem)
-
-        assertEquals("$10.00", result)
+        assertEquals("$60.71", result)
     }
 
     @Test
-    fun testGetHeaderDateRange() {}
+    fun testGetEstimatedEarnings_returnsNegativeString() {
+        var tempRideItem = rideItem
+        tempRideItem[0].estimatedEarningsCents = -100
+        val result = parseJsonStuff.getEstimatedEarnings(tempRideItem)
+        assertEquals("-$1.00", result)
+    }
+
+    @Test
+    fun testGetHeaderDateRange_returnsString() {
+        val result = parseJsonStuff.getHeaderDateRange(rideItem)
+        assertEquals("11:18 AM - 12:37 PM", result)
+    }
 
     @Test
     fun testGetTimeString() {}

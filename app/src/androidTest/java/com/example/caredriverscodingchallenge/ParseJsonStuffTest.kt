@@ -9,7 +9,7 @@ import org.junit.Test
 
 class ParseJsonStuffTest : TestCase() {
     private var parseJsonStuff: ParseJsonStuff = ParseJsonStuff()
-    private var rideItem: List<Ride> = mutableListOf(
+    private var rideItem: List<Ride> = listOf(
         // Dummy data
         Ride(
             1,
@@ -19,11 +19,11 @@ class ParseJsonStuffTest : TestCase() {
             6071,
             50,
             18.48,
-            mutableListOf(
+            listOf(
                 OrderedWaypoint(
                     222,
                     true,
-                    mutableListOf(
+                    passengers = listOf(
                         Passenger(123, true, "Mark"),
                         Passenger(121, false, "John")
                     ),
@@ -38,13 +38,13 @@ class ParseJsonStuffTest : TestCase() {
     )
 
     @Test
-    fun testGetEstimatedEarnings_returnsString() {
+    fun testGetEstimatedEarnings_normalInput() {
         val result = parseJsonStuff.getEstimatedEarnings(rideItem)
         assertEquals("$60.71", result)
     }
 
     @Test
-    fun testGetEstimatedEarnings_returnsNegativeString() {
+    fun testGetEstimatedEarnings_negativeInput() {
         var tempRideItem = rideItem
         tempRideItem[0].estimatedEarningsCents = -100
         val result = parseJsonStuff.getEstimatedEarnings(tempRideItem)
@@ -52,7 +52,15 @@ class ParseJsonStuffTest : TestCase() {
     }
 
     @Test
-    fun testGetHeaderDateRange_returnsString() {
+    fun testGetEstimatedEarnings_excessivelyLargeInput() {
+        var tempRideItem = rideItem
+        tempRideItem[0].estimatedEarningsCents = 100000071
+        val result = parseJsonStuff.getEstimatedEarnings(tempRideItem)
+        assertEquals("$1,000,000.71", result)
+    }
+
+    @Test
+    fun testGetHeaderDateRange_normalInput() {
         val result = parseJsonStuff.getHeaderDateRange(rideItem)
         assertEquals("11:18 AM - 12:37 PM", result)
     }

@@ -1,4 +1,4 @@
-# CareDriversAPIExample
+# CareDriversAPI
 
 Libraries used:
 - androidx recyclerview
